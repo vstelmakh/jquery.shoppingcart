@@ -12,8 +12,7 @@ Include script *after* the jQuery library (unless you are packaging scripts some
 
 ## Browser requirements
 
-![ScreenShot]()
-IE 8+ FrireFox 3.5+ Safari 4.0+ Chrome 4.0+ Opera 10.5+ iPhone 2.0+ Android 2.0+
+![ScreenShot](https://bytebucket.org/vov1/jquery.shoppingcart/raw/5876a7a86acc2d0e3239c274c4505973eae5198b/browsersupport.png?token=e9f7108e74828b3c17e16a10e3f12db299664551)
 
 ## Usage
 
@@ -32,7 +31,7 @@ $.shoppingcart('add',{
 			});
 ```
 
-**Only 'id' & 'price' are required!
+**Only 'id' & 'price' are required!**
 
 Remove item:
 ```javascript
