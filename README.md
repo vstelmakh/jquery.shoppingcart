@@ -31,7 +31,7 @@ $.shoppingcart('add',{
 			});
 ```
 
-**Only 'id' & 'price' are required!**
+**Only *id* & *price* are required!**
 
 Remove item:
 ```javascript
