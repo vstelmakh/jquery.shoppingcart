@@ -1,5 +1,5 @@
 /*!
- * jQuery ShoppingCart Plugin v1.2.2
+ * jQuery ShoppingCart Plugin v1.4.2
  * http://knopix.net/
  *
  * Copyright 2014 Volodymyr Stelmakh (vov1)
@@ -27,7 +27,7 @@
 		
 		// Find item index
 		function FindItem( id ) {
-			shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
+			var shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
 			
 			for(var i in shoppingcartArray) {
     			if ( !shoppingcartArray.hasOwnProperty(i) ) continue;
@@ -53,7 +53,7 @@
     			}
     			
     			// Get items
-    			shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
+    			var shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
     			
     			// Check if item already in cart
     			index = FindItem( content.id );
@@ -79,16 +79,75 @@
 				localStorage.setItem('shoppingcartProducts', JSON.stringify(shoppingcartArray));
 				
 				// Update count
-				Count = parseInt( localStorage.getItem('shoppingcartCount') ) + (content.count || 1);
+				var Count = parseInt( localStorage.getItem('shoppingcartCount') ) + (content.count || 1);
 				localStorage.setItem( 'shoppingcartCount', Count );
 				
 				// Update price
-				Price = parseFloat( localStorage.getItem('shoppingcartPrice') ) + (content.price * (content.count || 1));
+				var Price = parseFloat( localStorage.getItem('shoppingcartPrice') ) + (content.price * (content.count || 1));
 				localStorage.setItem( 'shoppingcartPrice', Price);
 				
 				return true;
     		},
     		
+    		// Edit item
+    		edit : function( content ) {
+    			// Check for required id
+    			if ( ! content.id ) {
+    				$.error( "'id' is NOT defined!" );
+    				return false;
+    			}
+    			
+    			// Get items
+    			var shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
+    			
+    			// Check if item already in cart
+    			index = FindItem( content.id );
+    			
+    			if ( index === null ) {
+    				$.error( "No item with required id!" );
+    				return false;
+    			}
+    			else {
+					// item exist
+					if (content.image !== undefined) {
+						shoppingcartArray[index].image = content.image;
+					}
+					if (content.name !== undefined) {
+						shoppingcartArray[index].name = content.name;
+					}
+					if (content.code !== undefined) {
+						shoppingcartArray[index].code = content.code;
+					}
+					if (content.url !== undefined) {
+						shoppingcartArray[index].url = content.url;
+					}
+					if (content.attributes !== undefined) {
+						shoppingcartArray[index].attributes = content.attributes;
+					}
+					var oldPrice = shoppingcartArray[index].price;
+					if (content.price !== undefined) {
+						shoppingcartArray[index].price = parseFloat(content.price);
+					}
+					var oldCount = shoppingcartArray[index].count;
+					if (content.count !== undefined) {
+						shoppingcartArray[index].count = parseInt(content.count);
+					}
+				}
+				
+				// Update storage
+				localStorage.setItem('shoppingcartProducts', JSON.stringify(shoppingcartArray));
+				
+				// Update count & price
+				if ( content.count !== undefined || content.price !== undefined ) {
+					var Count = parseInt( localStorage.getItem('shoppingcartCount') ) + (parseInt(content.count) - oldCount);
+					localStorage.setItem( 'shoppingcartCount', Count );
+					
+					var Price = parseFloat( localStorage.getItem('shoppingcartPrice') ) + (shoppingcartArray[index].count * shoppingcartArray[index].price) - (oldCount * oldPrice);
+					localStorage.setItem( 'shoppingcartPrice', Price);
+				}
+				
+				return true;
+    		},
     		
     		// Remove selected item
    			remove : function( content ) {
@@ -102,12 +161,12 @@
     			if ( index === null) return false;
     			
     			// Get items
-    			shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
+    			var shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
     			// Update count
-				Count = parseInt( localStorage.getItem('shoppingcartCount') ) - shoppingcartArray[index].count;
+				var Count = parseInt( localStorage.getItem('shoppingcartCount') ) - shoppingcartArray[index].count;
 				localStorage.setItem( 'shoppingcartCount', Count );				
 				// Update price
-				Price = parseFloat( localStorage.getItem('shoppingcartPrice') ) - (shoppingcartArray[index].price * shoppingcartArray[index].count);
+				var Price = parseFloat( localStorage.getItem('shoppingcartPrice') ) - (shoppingcartArray[index].price * shoppingcartArray[index].count);
 				localStorage.setItem( 'shoppingcartPrice', Price);		
     			// Remove selected item
     			shoppingcartArray.splice( index, 1 );			
@@ -141,7 +200,21 @@
     		getAll : function(  ) {
       			// Get items
     			return JSON.parse( localStorage.getItem('shoppingcartProducts') );
-    		}
+    		},
+    		
+    		// Get item by id
+    		getById : function( id ) {
+				index = FindItem( parseInt(id) );
+				if ( index === null) {
+					$.error( "No item with required id!" );
+    				return false;
+				}
+				else {
+					// Get all items
+    				var shoppingcartArray = JSON.parse( localStorage.getItem('shoppingcartProducts') );
+    				return shoppingcartArray[index];
+				}
+			}
   		};
 		
 		
