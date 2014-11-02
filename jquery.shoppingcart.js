@@ -1,5 +1,5 @@
 /*!
- * jQuery ShoppingCart Plugin v1.4.2
+ * jQuery ShoppingCart Plugin v1.4.3
  * http://knopix.net/
  *
  * Copyright 2014 Volodymyr Stelmakh (vov1)
@@ -72,7 +72,7 @@
 					} );
 				} else {
 					// item exist
-					shoppingcartArray[index].count += content.count;
+					shoppingcartArray[index].count += parseInt( (content.count || 1) );
 				}
     			
 				// Update storage

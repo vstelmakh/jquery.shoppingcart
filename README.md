@@ -33,6 +33,22 @@ $.shoppingcart('add',{
 
 **Only *id* & *price* are required!**
 
+Edit item:
+```javascript
+$.shoppingcart('edit',{
+				'id': 123,
+				'image': 'path/to/newImage.png',
+				'name': 'ProductNewName',
+				'code': 'ProductNew123',
+				'url': 'catalog/clothes/product/123',
+				'attributes': ['M', 'White'],
+				'price': 60,
+				'count': 2
+			});
+```
+
+**Only *id* is required!**
+
 Remove item:
 ```javascript
 $.shoppingcart('remove', {'id': 123});
@@ -55,9 +71,15 @@ Get total cart price:
 $.shoppingcart('getPrice');
 ```
 
+Get item by id:
+```javascript
+// Returns object { 'id', 'image', 'name', 'code', 'url', 'attributes', 'price', 'count' }
+$.shoppingcart('getById', id);
+```
+
 Get all cart items:
 ```javascript
-// Returns array of object { 'id', 'image', 'name', 'code', 'url', 'attributes', 'price', 'count' }
+// Returns ARRAY of object { 'id', 'image', 'name', 'code', 'url', 'attributes', 'price', 'count' }
 $.shoppingcart('getAll');
 ```
 
